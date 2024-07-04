@@ -16,17 +16,17 @@
             width: 100%;
             background-color: white;
             text-align: center;
-            padding: 20px 0;
+            padding: 10px 0; /* Reduced padding */
             z-index: 1000;
         }
         main {
-            margin-top: 120px; /* Reduced to provide space for fixed header */
-            padding-top: 20px;
+            margin-top: 60px; /* Reduced margin to align with header height */
+            padding-top: 40px;
             padding-bottom: 80px; /* Added padding to the bottom to avoid overlap with the footer */
         }
         .indented-section {
-            margin-left: 20%;
-            width: 60%;
+            margin-left: 30%;
+            width: 40%;
         }
         h1 {
             margin: 0;
@@ -39,7 +39,7 @@
             border: 0;
             height: 1px;
             background: #ccc;
-            width: 60%;
+            width: 40%;
             margin: 20px auto; /* Center horizontally by setting margin to auto */
         }
         footer {
@@ -48,7 +48,7 @@
             width: 100%;
             text-align: center;
             background-color: white;
-            padding: 10px 0;
+            padding: 0px 0;
             z-index: 1000;
         }
         .responsive-img {
@@ -69,39 +69,52 @@
 <body>
     <header>
         <h1>Web Scraping with GPT-4o: An Inefficient Way To Avoid HTML</h1>
+        <a href="https://github.com/egoodman92/political-chat/tree/NYT-chromedriver" style="font-size: 18px;">Check the Code</a>
         <hr class="custom-hr"> <!-- Add horizontal line under the title -->
     </header>
     <main class="indented-section">
-        <p>Every so often for a project, you need to do some web-scraping. For those of us that see this as a once-in-a-while task, we may be reminded of the pain of scraping, as an annoying convolution of BeautifulSoup, maybe Selenium, and maybe Chromedriver.</p> 
-            
-        <p>If memory serves, you need to understand the specific structure of various websites in order to get the exact information you care about, and once the website changes, all that is gone, and you may need to start over. And for any real website, there are often security barriers, request limitations, etc, making you want to avoid the day you next need to do a web-scraping project.</p>
-
-        <p>For someone with a hammer, many things may look like a nail. As someone more well-versed in deep learning over the last five years rather than traditional software engineering (ChemEng by training), there seemed to be a silly possibility of using new SOTA Vision Language Models (VLMs) like GPT-4o to help us here.</p>
-
-        <p>So gave it a try, it kind of worked. I'm sure there may be better applications where this is more useful, but in this case, scraping NYT articles, it helped me bypass login/anti-scraping security rules, so I appreciated it!</p>
+        <p>Every so often for a project, you need to do some web-scraping. For those of us that see this as a once-in-a-while task, we may be painfully reminded of the annoying convolution of BeautifulSoup, maybe Selenium, and maybe Chromedriver.</p> 
+        <p>For traditional approaches, you need to understand the specific structure of various websites in order to get the exact information you care about. If the website changes format at a later date, all that work is gone, and you may need to start over. And for any serious website, there are security barriers, request limitations, etc, making you want to avoid the day you next need to scrape the web.</p>
+        <p>For someone with a hammer, I guess everything looks like a nail? Well, as someone who spent the last five years in deep learning, and knows very little about traditional software engineering and front-end dev, there seemed to be a silly possibility of using new SOTA Vision Language Models (VLMs) like GPT-4o to help us with web-scraping.</p>
+        <p>So I prototyped it in a few hours, gave it a try, and it kind of worked. I'm sure there may be better applications where this is more useful, but in this case of scraping NYT articles, it helped me bypass login/anti-scraping security rules, so I appreciated it!</p>
         
 
         <h2>Stage 1: Scrape Web Images with Chromedriver</h2>
-        <p>The first stage uses Chromedriver to pull up a browser, and scroll through a website in minimally-overlapping shots, to capture the entire page. These screenshots are saved in a directory. Using chromedriver in this way ensures that even dynamic content loaded via JavaScript is captured, providing a complete visual record of the webpage.</p>
-
-        <p>A pretty big advantage here is that using Chromedriver with a google Chrome profile with the correct login permissions will allow you to browse, and scrape, websites that may otherwise have burdensome permission blocks.</p>
-
-        <img src="concatenated_high_res.gif" alt="Concatenated High Resolution GIF" class="fixed-width-img">
+        <p>The first stage uses Chromedriver to pull up a browser, and scrolls through a website while extracting minimally-overlapping screenshots, to capture the entire page. These screenshots are saved to a directory. Using chromedriver ensures that even dynamic content loaded via JavaScript is captured, providing a complete visual record of the webpage.</p>
+        <p>A pretty big advantage here is that using Chromedriver with a Google Chrome profile with the correct login permissions will allow you to browse and scrape websites that may otherwise have burdensome permission blocks.</p>
+        <img src="cropped_combined_gif.gif" alt="Concatenated High Resolution GIF" class="fixed-width-img">
 
 
         <h2>Stage 2: OCR with GPT-4o VLM</h2>
-        <p>In the second stage, the saved screenshots are sent to the GPT-4o API to extract text. Upon casual inspection, GPT-4o does a pretty great job at extracting relevant text, which is saved to a .txt file. I'm guessing theres some sort of OCR tool that is plugged into GPT-4o, or I'd be quite surprised.
-
+        <p>In the second stage, the saved screenshots are sent to the GPT-4o API to extract text. To speed this up, these are sent in parallel with ThreadPoolExecutor. Upon casual inspection, GPT-4o does a pretty good job of extracting relevant text, which is saved to a series of .txt files. I'd be surprised if GPT-4o doesn't have some sort of OCR tool.
         <p>Here, there is the potential for doing other sorts of webscraping analysis that would certainly be beyond traditional BeautifulSoup style scraping; for example, if we want to include descriptive captions for images in the article transcription, this is something you would need a VLM for.</p>
 
 
-
         <h2>Stage 3: Synthesize Full Transcript</h2>
-        <p>The last stage simply takes a directory of .txt file chunks, concatenates them in order into a single prompt, and asks GPT-4o to synthesize them into a single .txt article verbatim. Modern LLMs should have no problem doing this relatively simple task, but be careful to ask for an exact synthesis, and make sure you have sufficient output tokens to capture the whole articlec.</p>
+        <p>The last stage simply takes a directory of .txt file chunks, sequentially concatenates them, and asks GPT-4o to synthesize them into a single .txt article verbatim. Modern LLMs should have no problem doing this relatively simple task. Be careful to ask for an exact synthesis, and make sure you have sufficient output tokens to capture the whole article.</p>
 
-        <h2>Analysis, and My Take</h2>
-        <p>My hot take, costs, speed. When its useful. Code repo.</p>
-
+        <h2>Performance?</h2>
+        <p>Here are some metrics calculated by GPT, on comparable chunks between the original NYT article and that created by GPT. If you're looking for perfection, this is lacking. But from a computer vision perspective, not too bad!</p>
+        <ul>
+            <li><b><u>Jaccard Similarity Index</u></b>: Measures the similarity between the sets of tokens in the original and scraped texts. Value: 0.9295. Interpretation: High similarity between the two texts.</li>
+            <li><b><u>Word-Level Accuracy</u></b>: Measures the proportion of words in the original text that appear in the scraped text. Value: 0.9339. Interpretation: Approximately 93.39% of the words in the original text are in the scraped text.</li>
+            <li><b><u>Character-Level Accuracy</u></b>: Measures the similarity between the original and scraped texts based on character sequences. Value: 0.8848. Interpretation: The character sequences in the original and scraped texts are about 88.48% similar.</li>
+            <li><b><u>Levenshtein Distance</u></b>: Measures the number of single-character edits needed to change one text into the other. Value: 306. Interpretation: 306 single-character edits are needed to transform the original text into the scraped text.</li>
+        </ul>
+        
+        <h2>Analysis and Thoughts</h2>
+        <p>Overall, it feels funny and fun to explore this idea. Some initial thoughts:</p>
+        <ul>
+            <li>[-] This method is not cheap, basically infinitely more expensive than using requests or BeautifulSoup. Each screenshot you send for OCR to GPT-4o costs about 1c, which means an article can cost 10-20c. However, locally hosted models, or simpler OCR models (maybe Tesseract?) could decrease this cost to almost 0</li>
+            <li>[-] This method is also pretty slow - even with chromedriver taking milliseconds per screenshot, and parallel GPT-4o calls, it still takes 10+ seconds to transcribe an article</li>
+            <li>[-] As we're using computer vision, this method will not have perfect performance</li>
+            <li>[+] Inspired by security/permissions challenges, I did find this method allowed me to finally allow me to scrape NYT articles</li>
+            <li>[+] Can gain information from javascript, dynamically rendered content</li>
+            <li>[+] If you connect this with more advanced chromedriver functionalities (i.e. clicking, moving between URLs) you can probably do more complex tasks. One example could be waiting for a reservation to open up, and sending you a message.</li>
+        </ul>
+        
+        <p>Let me know what you think at <a href="mailto:egoodman92@gmail.com">egoodman92@gmail.com</a>. Still building up the repo to make it more robust. If there is a much easier way of scraping NYT articles, or you have another use case this may be interesting for, please let me know!</p>
+        <a href="https://github.com/egoodman92/political-chat/tree/NYT-chromedriver">Check out the code!</a>
 
 
     </main>
