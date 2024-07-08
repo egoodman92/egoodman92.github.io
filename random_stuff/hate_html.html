@@ -63,6 +63,14 @@
             margin-top: 40px; /* Adjust the value as needed */
             margin-bottom: 40px; /* Adjust the value as needed */
         }
+        .half-width-img {
+        display: block;
+        margin: auto;
+        width: 50%; /* 50% of the container's width */
+        height: auto; /* Maintain proportional height */
+        margin-top: 40px; /* Adjust the value as needed */
+        margin-bottom: 40px; /* Adjust the value as needed */
+        }
 
     </style>
 </head>
@@ -92,6 +100,8 @@
 
         <h2>Stage 3: Synthesize Full Transcript</h2>
         <p>The last stage simply takes a directory of .txt file chunks, sequentially concatenates them, and asks GPT-4o to synthesize them into a single .txt article verbatim. Modern LLMs should have no problem doing this relatively simple task. Be careful to ask for an exact synthesis, and make sure you have sufficient output tokens to capture the whole article.</p>
+        <p>Below you can see part of the output .html file. Whether you want to include things like author, captions, can easily be modified by changing the scraping prompt.</p>
+        <img src="scraped_article.png" alt="Scraped Article" class="half-width-img">
 
         <h2>Performance?</h2>
         <p>Here are some metrics calculated by GPT, on comparable chunks between the original NYT article and that created by this scraping protocol. If you're looking for perfection, this is lacking. But from a computer vision perspective, not too bad!</p>
