@@ -74,8 +74,8 @@
     </header>
     <main class="indented-section">
         <p>Every so often for a project, you need to do some web-scraping. For those of us that see this as a once-in-a-while task, we may be painfully reminded of the annoying convolution of BeautifulSoup, maybe Selenium, and maybe Chromedriver.</p> 
-        <p>For traditional approaches, you need to understand the specific structure of various websites in order to get the exact information you care about. If the website changes format at a later date, all that work is gone, and you may need to start over. And for any serious website, there are security barriers, request limitations, etc, making you want to avoid the day you next need to scrape the web.</p>
-        <p>For someone with a hammer, I guess everything looks like a nail? Well, as someone who spent the last five years in deep learning, and knows very little about traditional software engineering and front-end dev, there seemed to be a silly possibility of using new SOTA Vision Language Models (VLMs) like GPT-4o to help us with web-scraping.</p>
+        <p>For traditional approaches, you need to understand the specific structure of various websites in order to get the exact information you care about. If the website changes format, all that work is gone, and you may need to start over. And for any serious website, there are security barriers, request limitations, etc, making you want to avoid the day you next need to scrape the web.</p>
+        <p>As someone who spent the last five years in deep learning, and knows very little about traditional software engineering and front-end dev, there seemed to be a silly possibility of using new SOTA Vision Language Models (VLMs) like GPT-4o to help us with web-scraping.</p>
         <p>So I prototyped it in a few hours, gave it a try, and it kind of worked. I'm sure there may be better applications where this is more useful, but in this case of scraping NYT articles, it helped me bypass login/anti-scraping security rules, so I appreciated it!</p>
         
 
@@ -94,7 +94,7 @@
         <p>The last stage simply takes a directory of .txt file chunks, sequentially concatenates them, and asks GPT-4o to synthesize them into a single .txt article verbatim. Modern LLMs should have no problem doing this relatively simple task. Be careful to ask for an exact synthesis, and make sure you have sufficient output tokens to capture the whole article.</p>
 
         <h2>Performance?</h2>
-        <p>Here are some metrics calculated by GPT, on comparable chunks between the original NYT article and that created by GPT. If you're looking for perfection, this is lacking. But from a computer vision perspective, not too bad!</p>
+        <p>Here are some metrics calculated by GPT, on comparable chunks between the original NYT article and that created by this scraping protocol. If you're looking for perfection, this is lacking. But from a computer vision perspective, not too bad!</p>
         <ul>
             <li><b><u>Jaccard Similarity Index</u></b>: Measures the similarity between the sets of tokens in the original and scraped texts. Value: 0.9295. Interpretation: High similarity between the two texts.</li>
             <li><b><u>Word-Level Accuracy</u></b>: Measures the proportion of words in the original text that appear in the scraped text. Value: 0.9339. Interpretation: Approximately 93.39% of the words in the original text are in the scraped text.</li>
